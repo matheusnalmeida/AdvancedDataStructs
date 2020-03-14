@@ -38,6 +38,8 @@ public interface BinarySearchTree_int<Index extends Comparable<Index>,E> {
 	public boolean isRoot(BinaryNodeSearchTree<Index,E> node) throws EmptyTreeException;
         //insere no na arvore
         public void insert(BinaryNodeSearchTree<Index,E> new_node) throws InvalidNodeException;
+        //Remove no da arvore
+        public boolean remove(Index chave);
         //procura no na arvore de forma iterativa
         public BinaryNodeSearchTree<Index,E> find_iterativo(Index index) throws InvalidNodeException,EmptyTreeException;
         //procura no na arvore de forma recursiva
