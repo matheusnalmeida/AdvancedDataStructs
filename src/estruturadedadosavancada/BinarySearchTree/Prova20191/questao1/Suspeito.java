@@ -11,7 +11,6 @@ import estruturadedadosavancada.EmptyTreeException;
 import estruturadedadosavancada.InvalidNodeException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  *
@@ -19,11 +18,13 @@ import java.util.Objects;
  */
 public class Suspeito implements Comparable<Suspeito> {
 
+    private int id;
     private String nome;
     private List<Crime> listaDeCrimes;
-    private BinarySearchTree<String, Suspeito> arvoreDeCumplices;
+    private BinarySearchTree<String, List<Suspeito>> arvoreDeCumplices;
 
-    public Suspeito(String nome) {
+    public Suspeito(String nome, int id) {
+        this.id = id;
         this.nome = nome;
         this.arvoreDeCumplices = new BinarySearchTree<>();
         this.listaDeCrimes = new ArrayList<>();
@@ -40,18 +41,41 @@ public class Suspeito implements Comparable<Suspeito> {
 
     public boolean cadastrarCumplice(Suspeito cumplice) {
         try {
-            this.arvoreDeCumplices.insert(new BinaryNodeSearchTree<>(cumplice.getNome(), cumplice));
-            return true;
+            BinaryNodeSearchTree<String, List<Suspeito>> elemento_atual = this.arvoreDeCumplices.find_iterativo(cumplice.getNome());
+            if (elemento_atual != null) {
+                if (!elemento_atual.getValor().contains(cumplice)) {
+                    elemento_atual.getValor().add(cumplice);
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                List<Suspeito> lista_nova = new ArrayList<>();
+                lista_nova.add(cumplice);
+                BinaryNodeSearchTree<String, List<Suspeito>> novo_elemento = new BinaryNodeSearchTree<>(cumplice.getNome(), lista_nova);
+                this.arvoreDeCumplices.insert(novo_elemento);
+                return true;
+            }
+        } catch (EmptyTreeException ex) {
+            List<Suspeito> lista_nova = new ArrayList<>();
+            lista_nova.add(cumplice);
+            BinaryNodeSearchTree<String, List<Suspeito>> novo_elemento = new BinaryNodeSearchTree<>(cumplice.getNome(), lista_nova);
+            try {
+                this.arvoreDeCumplices.insert(novo_elemento);
+                return true;
+            } catch (InvalidNodeException ex1) {
+                return false;
+            }
         } catch (InvalidNodeException ex) {
-            return false;
+           return false;
         }
     }
 
     public boolean contemCumplice(Suspeito cumplice) {
         try {
-            BinaryNodeSearchTree<String, Suspeito> elemento_atual = this.arvoreDeCumplices.find_iterativo(cumplice.getNome());
+            BinaryNodeSearchTree<String, List<Suspeito>> elemento_atual = this.arvoreDeCumplices.find_iterativo(cumplice.getNome());
             if (elemento_atual != null) {
-                return true;
+                return elemento_atual.getValor().contains(cumplice);
             }
             return false;
         } catch (EmptyTreeException ex) {
@@ -60,7 +84,7 @@ public class Suspeito implements Comparable<Suspeito> {
     }
 
     public String listarCumplicesOrdenado() {
-        List<BinaryNodeSearchTree<String, Suspeito>> listaDeCumplices = this.arvoreDeCumplices.em_ordem();
+        List<BinaryNodeSearchTree<String, List<Suspeito>>> listaDeCumplices = this.arvoreDeCumplices.em_ordem();
         if (listaDeCumplices.isEmpty()) {
             return "O suspeito nao possui cumplices";
         }
@@ -69,12 +93,11 @@ public class Suspeito implements Comparable<Suspeito> {
                 append(this.nome).append(" -----------------\n");
         for (int i = 0; i < listaDeCumplices.size(); i++) {
             construtor.append(listaDeCumplices.get(i)).append(", ");
-            ;
         }
         return construtor.toString();
     }
 
-    public BinarySearchTree<String, Suspeito> getArvoreDeCumplices() {
+    public BinarySearchTree<String, List<Suspeito>> getArvoreDeCumplices() {
         return arvoreDeCumplices;
     }
 
@@ -100,11 +123,15 @@ public class Suspeito implements Comparable<Suspeito> {
             return false;
         }
     }
-    
+
+    public int getId() {
+        return id;
+    }
+
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 17 * hash + Objects.hashCode(this.nome);
+        int hash = 5;
+        hash = 97 * hash + this.id;
         return hash;
     }
 
@@ -120,7 +147,7 @@ public class Suspeito implements Comparable<Suspeito> {
             return false;
         }
         final Suspeito other = (Suspeito) obj;
-        if (!Objects.equals(this.nome, other.nome)) {
+        if (this.id != other.id) {
             return false;
         }
         return true;
@@ -130,6 +157,5 @@ public class Suspeito implements Comparable<Suspeito> {
     public String toString() {
         return this.nome;
     }
-    
 
 }

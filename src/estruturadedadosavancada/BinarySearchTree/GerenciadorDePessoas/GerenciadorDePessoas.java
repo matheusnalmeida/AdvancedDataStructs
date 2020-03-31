@@ -9,8 +9,7 @@ import estruturadedadosavancada.BinarySearchTree.BinaryNodeSearchTree;
 import estruturadedadosavancada.BinarySearchTree.BinarySearchTree;
 import estruturadedadosavancada.EmptyTreeException;
 import estruturadedadosavancada.InvalidNodeException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
 
 /**
  *
@@ -67,4 +66,17 @@ public class GerenciadorDePessoas {
         return this.arvore_de_pessoas.printarArvore();
     }
     
+    public String listarPessoasEmOrdem(){
+        List<BinaryNodeSearchTree<Integer,Pessoa>> lista_pessoas_ordenada = this.arvore_de_pessoas.em_ordem();
+        StringBuilder construtor = new StringBuilder();
+        if(lista_pessoas_ordenada.isEmpty()){
+            return "Nao ha pessoas cadastradas";
+        }else{
+            for (int i = 0; i < lista_pessoas_ordenada.size(); i++) {
+                construtor.append(lista_pessoas_ordenada.get(i).getValor()).append(", ");
+            }
+            construtor.append("\n");
+            return construtor.toString();
+        }
+    }
 }

@@ -21,7 +21,7 @@ public class Chave<E> implements Comparable<Chave<E>>{
         this.tipo = tipo;
         this.nome = nome;
     }
-    
+
     public Chave(String tipo,E elemento) throws NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
         Class<?> element_class = elemento.getClass();
         

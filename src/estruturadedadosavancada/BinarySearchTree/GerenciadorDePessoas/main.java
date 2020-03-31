@@ -35,7 +35,8 @@ public class main {
         System.out.println(gerenciador.removerPessoa(3));
         System.out.println("--------------------------------Listando Pessoas----------------------------------------");
         System.out.println(gerenciador.listarPessoas());
-        
+        System.out.println("--------------------------------Listando Pessoas Ordendadas Pelo CPF----------------------------------------");
+        System.out.println(gerenciador.listarPessoasEmOrdem());
     }
     
 }

@@ -17,6 +17,8 @@ import estruturadedadosavancada.BinarySearchTree_int;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class BinarySearchTree<Index extends Comparable<Index>, E> implements BinarySearchTree_int<Index, E> {
 
@@ -235,8 +237,8 @@ public class BinarySearchTree<Index extends Comparable<Index>, E> implements Bin
 
     private List<BinaryNodeSearchTree<Index, E>> pos_ordem(BinaryNodeSearchTree<Index, E> current, List<BinaryNodeSearchTree<Index, E>> nos_pos_ordem) {
         if (current != null) {
-            pre_ordem(current.getEsquerda(), nos_pos_ordem);
-            pre_ordem(current.getDireita(), nos_pos_ordem);
+            pos_ordem(current.getEsquerda(), nos_pos_ordem);
+            pos_ordem(current.getDireita(), nos_pos_ordem);
             nos_pos_ordem.add(current);
 
         }
@@ -251,9 +253,9 @@ public class BinarySearchTree<Index extends Comparable<Index>, E> implements Bin
 
     private List<BinaryNodeSearchTree<Index, E>> em_ordem(BinaryNodeSearchTree<Index, E> current, List<BinaryNodeSearchTree<Index, E>> nos_em_ordem) {
         if (current != null) {
-            pre_ordem(current.getEsquerda(), nos_em_ordem);
+            em_ordem(current.getEsquerda(), nos_em_ordem);
             nos_em_ordem.add(current);
-            pre_ordem(current.getDireita(), nos_em_ordem);
+            em_ordem(current.getDireita(), nos_em_ordem);
         }
         return nos_em_ordem;
     }
@@ -287,22 +289,28 @@ public class BinarySearchTree<Index extends Comparable<Index>, E> implements Bin
             return true;
         } //Verificando se o no possui uma sub arvore ou a direita ou a esquerda
         else if (current.getEsquerda() != null && current.getDireita() == null) {
-            if (current.getChave() == this.root.getChave()) {
+            if (current.getChave().compareTo(this.root.getChave()) == 0) {
                 this.root = current.getEsquerda();
+                current.getEsquerda().setFather(null);
             }else if (ehEsquerdo) {
                 current.getFather().setEsquerda(current.getEsquerda());
+                current.getEsquerda().setFather(current.getFather());
             } else {
                 current.getFather().setDireita(current.getEsquerda());
+                current.getEsquerda().setFather(current.getFather());
             }
             this.tamanho--;
             return true;
         } else if (current.getDireita() != null && current.getEsquerda() == null) {
-            if (current.getChave() == this.root.getChave()) {
+            if (current.getChave().compareTo(this.root.getChave()) == 0) {
                 this.root = current.getDireita();
+                current.getDireita().setFather(null);
             }else if (ehEsquerdo) {
                 current.getFather().setEsquerda(current.getDireita());
+                current.getDireita().setFather(current.getFather());
             } else {
                 current.getFather().setDireita(current.getDireita());
+                current.getDireita().setFather(current.getFather());
             }
             this.tamanho--;
             return true;
@@ -311,12 +319,16 @@ public class BinarySearchTree<Index extends Comparable<Index>, E> implements Bin
             BinaryNodeSearchTree<Index,E> sucessor = this.acharSucessor(current);
             if(current.getChave().compareTo(this.root.getChave()) == 0){
                 this.root = sucessor;
+                sucessor.setFather(null);
             }else if(ehEsquerdo){
                 current.getFather().setEsquerda(sucessor);
+                sucessor.setFather(current.getFather());
             }else{
                 current.getFather().setDireita(sucessor);
+                sucessor.setFather(current.getFather());
             }
             sucessor.setEsquerda(current.getEsquerda());
+            current.getEsquerda().setFather(sucessor);
             this.tamanho--;
             return true;
         }
@@ -330,10 +342,13 @@ public class BinarySearchTree<Index extends Comparable<Index>, E> implements Bin
             while(no_atual.getEsquerda() != null){
                 no_atual = no_atual.getEsquerda();
             }
-            
-            if(no_atual.getChave().compareTo(no_removido.getDireita().getChave()) != 0){
+            if(no_atual.getChave().compareTo(no_removido.getDireita().getChave()) != 0){ 
                 no_atual.getFather().setEsquerda(no_atual.getDireita());
+                if(no_atual.getDireita() != null){
+                    no_atual.getDireita().setFather(no_atual.getFather());
+                }
                 no_atual.setDireita(no_removido.getDireita());
+                no_removido.getDireita().setFather(no_atual);
             }
             return no_atual;
         }
@@ -428,6 +443,26 @@ public class BinarySearchTree<Index extends Comparable<Index>, E> implements Bin
         }
     }
 
+    public String printarArvoreSimples() {
+        StringBuilder construtor = new StringBuilder();
+        Iterator it = this.iterator();
+        while(it.hasNext()){
+            try {
+                BinaryNodeSearchTree<Index,E> elemento_atual = (BinaryNodeSearchTree<Index,E>) it.next();
+                List<BinaryNodeSearchTree<Index,E>> filhos = (List<BinaryNodeSearchTree<Index,E>>) this.children(elemento_atual);
+                construtor.append("---------------------- Filhos do elemento ").append(elemento_atual.getValor()).append(" ---------------------------------------------\n");
+                for(int i = 0;i < filhos.size();i++){
+                    construtor.append(i+1).append(")").append(filhos.get(i).getValor()).append("\n");
+                }
+            } catch (InvalidNodeException ex) {
+                Logger.getLogger(BinarySearchTree.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (EmptyTreeException ex) {
+                Logger.getLogger(BinarySearchTree.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return construtor.toString();
+    }
+    
     private String formata_nome(String nome) {
         StringBuilder nome_da_cidade_formatado = new StringBuilder();
         //Inserindo espacos antes da palavra

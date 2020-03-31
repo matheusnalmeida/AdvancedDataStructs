@@ -22,11 +22,11 @@ public class main {
         Crime receptacao = new Crime("receptacao", 4);
         Crime dano = new Crime("dano", 5);
         //Criando alguns Suspeitos que tbm podem ser Cumplices
-        Suspeito joao = new Suspeito("joao");
-        Suspeito pedro = new Suspeito("pedro");
-        Suspeito lucas = new Suspeito("lucas");
-        Suspeito ana = new Suspeito("ana");
-        Suspeito ricardo = new Suspeito("ricardo");
+        Suspeito joao = new Suspeito("joao",1);
+        Suspeito pedro = new Suspeito("pedro",2);
+        Suspeito lucas = new Suspeito("lucas",3);
+        Suspeito ana = new Suspeito("ana",4);
+        Suspeito ricardo = new Suspeito("ricardo",5);
 
         //Cadastrando crimes nos suspeitos
         joao.cadastrarCrime(furto);
