@@ -30,11 +30,13 @@ public class BinarySearchTree<Index extends Comparable<Index>, E> implements Bin
         this.root = null;
     }
 
+    //Retorna quantidade de elementos na arvore
     @Override
     public int size() {
         return this.tamanho;
     }
 
+    //Verifica se a arvore esta vazia
     @Override
     public boolean isEmpty() {
         return this.tamanho == 0;
@@ -45,6 +47,7 @@ public class BinarySearchTree<Index extends Comparable<Index>, E> implements Bin
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    //Substitui o valor armazenado em um no da arvore
     @Override
     public E replace(BinaryNodeSearchTree<Index, E> node, E v) throws InvalidNodeException, EmptyTreeException {
         BinaryNodeSearchTree<Index, E> actual_node = this.find_iterativo(node.getChave());
@@ -57,6 +60,7 @@ public class BinarySearchTree<Index extends Comparable<Index>, E> implements Bin
         return v;
     }
 
+    //Retorna a raiz da arvore
     @Override
     public BinaryNodeSearchTree<Index, E> root() throws EmptyTreeException {
         if (this.tamanho == 0) {
@@ -66,6 +70,7 @@ public class BinarySearchTree<Index extends Comparable<Index>, E> implements Bin
         return this.root;
     }
 
+    //Retorna o parente do no informado
     @Override
     public BinaryNodeSearchTree<Index, E> parent(BinaryNodeSearchTree<Index, E> node) throws InvalidNodeException, EmptyTreeException {
         BinaryNodeSearchTree<Index, E> actual_node = this.find_iterativo(node.getChave());
@@ -76,6 +81,7 @@ public class BinarySearchTree<Index extends Comparable<Index>, E> implements Bin
         return actual_node.getFather();
     }
 
+    //Retorna os filhos do no informado
     @Override
     public Iterable<BinaryNodeSearchTree<Index, E>> children(BinaryNodeSearchTree<Index, E> node) throws InvalidNodeException, EmptyTreeException {
         if (this.tamanho == 0) {
@@ -96,6 +102,7 @@ public class BinarySearchTree<Index extends Comparable<Index>, E> implements Bin
         return filhos;
     }
 
+    //Verifica se o no é interno(Possui Filho)
     @Override
     public boolean isInternal(BinaryNodeSearchTree<Index, E> node) throws InvalidNodeException, EmptyTreeException {
         if (this.isRoot(node)) {
@@ -106,18 +113,16 @@ public class BinarySearchTree<Index extends Comparable<Index>, E> implements Bin
             throw new InvalidNodeException("No nao exstente");
         }
 
-        if (actual_node.getEsquerda() != null || actual_node.getDireita() != null) {
-            return true;
-        }
-
-        return false;
+        return actual_node.getEsquerda() != null || actual_node.getDireita() != null;
     }
 
+    //Retorna um iterador sobre a arvore
     @Override
     public Iterator<BinaryNodeSearchTree<Index, E>> iterator() {
-        return new BinarySearchTreeIterator<Index, E>(this.root);
+        return new BinarySearchTreeIterator<>(this.root);
     }
 
+    //Verifica se o no é externo(no folha)
     @Override
     public boolean isExternal(BinaryNodeSearchTree<Index, E> node) throws InvalidNodeException, EmptyTreeException {
         if (this.isRoot(node)) {
@@ -128,18 +133,16 @@ public class BinarySearchTree<Index extends Comparable<Index>, E> implements Bin
             throw new InvalidNodeException("No nao exstente");
         }
 
-        if (actual_node.getEsquerda() == null && actual_node.getDireita() == null) {
-            return true;
-        }
-
-        return false;
+        return actual_node.getEsquerda() == null && actual_node.getDireita() == null;
     }
 
+    //Verifica se o no informado é raiz
     @Override
     public boolean isRoot(BinaryNodeSearchTree<Index, E> node) throws EmptyTreeException {
         return this.root().getChave().equals(node.getChave());
     }
 
+    //Insere o no informado na arvore
     @Override
     public void insert(BinaryNodeSearchTree<Index, E> new_node) throws InvalidNodeException {
         if (this.root == null) {
@@ -171,6 +174,7 @@ public class BinarySearchTree<Index extends Comparable<Index>, E> implements Bin
         }
     }
 
+    //Metodo de busca de um no de forma iterativa
     @Override
     public BinaryNodeSearchTree<Index, E> find_iterativo(Index index) throws EmptyTreeException {
         if (this.tamanho == 0) {
@@ -191,6 +195,7 @@ public class BinarySearchTree<Index extends Comparable<Index>, E> implements Bin
         return current;
     }
 
+    //Metodo de busca de um no de forma recursiva
     @Override
     public BinaryNodeSearchTree<Index, E> find_recursivo(Index index) throws EmptyTreeException {
         if (this.tamanho == 0) {
@@ -260,6 +265,7 @@ public class BinarySearchTree<Index extends Comparable<Index>, E> implements Bin
         return nos_em_ordem;
     }
 
+    //Metodo de remocao de um no da arvore
     @Override
     public boolean remove(Index index) {
         BinaryNodeSearchTree<Index, E> current = this.root;
@@ -292,7 +298,7 @@ public class BinarySearchTree<Index extends Comparable<Index>, E> implements Bin
             if (current.getChave().compareTo(this.root.getChave()) == 0) {
                 this.root = current.getEsquerda();
                 current.getEsquerda().setFather(null);
-            }else if (ehEsquerdo) {
+            } else if (ehEsquerdo) {
                 current.getFather().setEsquerda(current.getEsquerda());
                 current.getEsquerda().setFather(current.getFather());
             } else {
@@ -305,7 +311,7 @@ public class BinarySearchTree<Index extends Comparable<Index>, E> implements Bin
             if (current.getChave().compareTo(this.root.getChave()) == 0) {
                 this.root = current.getDireita();
                 current.getDireita().setFather(null);
-            }else if (ehEsquerdo) {
+            } else if (ehEsquerdo) {
                 current.getFather().setEsquerda(current.getDireita());
                 current.getDireita().setFather(current.getFather());
             } else {
@@ -315,15 +321,15 @@ public class BinarySearchTree<Index extends Comparable<Index>, E> implements Bin
             this.tamanho--;
             return true;
         }//Condicao a ser executada caso o no possua mais de uma sub arvore
-        else{
-            BinaryNodeSearchTree<Index,E> sucessor = this.acharSucessor(current);
-            if(current.getChave().compareTo(this.root.getChave()) == 0){
+        else {
+            BinaryNodeSearchTree<Index, E> sucessor = this.acharSucessor(current);
+            if (current.getChave().compareTo(this.root.getChave()) == 0) {
                 this.root = sucessor;
                 sucessor.setFather(null);
-            }else if(ehEsquerdo){
+            } else if (ehEsquerdo) {
                 current.getFather().setEsquerda(sucessor);
                 sucessor.setFather(current.getFather());
-            }else{
+            } else {
                 current.getFather().setDireita(sucessor);
                 sucessor.setFather(current.getFather());
             }
@@ -333,18 +339,19 @@ public class BinarySearchTree<Index extends Comparable<Index>, E> implements Bin
             return true;
         }
     }
-    
-    private BinaryNodeSearchTree<Index,E> acharSucessor(BinaryNodeSearchTree<Index,E> no_removido){
-        if(no_removido.getDireita() == null){
+
+    //Metodo para achar o sucessor de um no em especifico
+    private BinaryNodeSearchTree<Index, E> acharSucessor(BinaryNodeSearchTree<Index, E> no_removido) {
+        if (no_removido.getDireita() == null) {
             return no_removido;
-        }else{
-            BinaryNodeSearchTree<Index,E> no_atual = no_removido.getDireita();
-            while(no_atual.getEsquerda() != null){
+        } else {
+            BinaryNodeSearchTree<Index, E> no_atual = no_removido.getDireita();
+            while (no_atual.getEsquerda() != null) {
                 no_atual = no_atual.getEsquerda();
             }
-            if(no_atual.getChave().compareTo(no_removido.getDireita().getChave()) != 0){ 
+            if (no_atual.getChave().compareTo(no_removido.getDireita().getChave()) != 0) {
                 no_atual.getFather().setEsquerda(no_atual.getDireita());
-                if(no_atual.getDireita() != null){
+                if (no_atual.getDireita() != null) {
                     no_atual.getDireita().setFather(no_atual.getFather());
                 }
                 no_atual.setDireita(no_removido.getDireita());
@@ -353,7 +360,7 @@ public class BinarySearchTree<Index extends Comparable<Index>, E> implements Bin
             return no_atual;
         }
     }
-    
+
     public String printarArvore() {
         try {
             int tamanhoDoBuffer = 150;
@@ -368,7 +375,7 @@ public class BinarySearchTree<Index extends Comparable<Index>, E> implements Bin
             String complete_tree = "";
             Queue<ArrayList<Integer>> filaDePosicoes = new LinkedList<>();
             int quantidadeDeNosNivel = 1;
-            
+
             String nome_formatado_root = formata_nome(elementoNaoFormatado.toString());
             int meioDaPalavra = ((nome_formatado_root.length()) / 2) - 1;
 
@@ -443,26 +450,6 @@ public class BinarySearchTree<Index extends Comparable<Index>, E> implements Bin
         }
     }
 
-    public String printarArvoreSimples() {
-        StringBuilder construtor = new StringBuilder();
-        Iterator it = this.iterator();
-        while(it.hasNext()){
-            try {
-                BinaryNodeSearchTree<Index,E> elemento_atual = (BinaryNodeSearchTree<Index,E>) it.next();
-                List<BinaryNodeSearchTree<Index,E>> filhos = (List<BinaryNodeSearchTree<Index,E>>) this.children(elemento_atual);
-                construtor.append("---------------------- Filhos do elemento ").append(elemento_atual.getValor()).append(" ---------------------------------------------\n");
-                for(int i = 0;i < filhos.size();i++){
-                    construtor.append(i+1).append(")").append(filhos.get(i).getValor()).append("\n");
-                }
-            } catch (InvalidNodeException ex) {
-                Logger.getLogger(BinarySearchTree.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (EmptyTreeException ex) {
-                Logger.getLogger(BinarySearchTree.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        return construtor.toString();
-    }
-    
     private String formata_nome(String nome) {
         StringBuilder nome_da_cidade_formatado = new StringBuilder();
         //Inserindo espacos antes da palavra
@@ -481,6 +468,96 @@ public class BinarySearchTree<Index extends Comparable<Index>, E> implements Bin
 
         return nome_da_cidade_formatado.toString();
     }
-        
+
+    public String printarArvoreSimples() {
+        StringBuilder construtor = new StringBuilder();
+        Iterator it = this.iterator();
+        while (it.hasNext()) {
+            try {
+                BinaryNodeSearchTree<Index, E> elemento_atual = (BinaryNodeSearchTree<Index, E>) it.next();
+                List<BinaryNodeSearchTree<Index, E>> filhos = (List<BinaryNodeSearchTree<Index, E>>) this.children(elemento_atual);
+                construtor.append("---------------------- Filhos do elemento ").append(elemento_atual.getValor()).append(" ---------------------------------------------\n");
+                for (int i = 0; i < filhos.size(); i++) {
+                    construtor.append(i + 1).append(")").append(filhos.get(i).getValor()).append("\n");
+                }
+            } catch (InvalidNodeException | EmptyTreeException ex) {
+                Logger.getLogger(BinarySearchTree.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return construtor.toString();
+    }
+
+    @Override
+    public BinaryNodeSearchTree<Index, E> retornaMaior() {
+        return this.retornaMaior(this.root);
+    }
+
+    private BinaryNodeSearchTree<Index, E> retornaMaior(BinaryNodeSearchTree<Index, E> actual_node) {
+        if (actual_node.getDireita() == null) {
+            return actual_node;
+        }
+        return this.retornaMaior(actual_node.getDireita());
+    }
+
+    @Override
+    public BinaryNodeSearchTree<Index, E> retornaMenor() {
+        return this.retornaMenor(this.root);
+    }
+
+    private BinaryNodeSearchTree<Index, E> retornaMenor(BinaryNodeSearchTree<Index, E> actual_node) {
+        if (actual_node.getEsquerda() == null) {
+            return actual_node;
+        }
+        return this.retornaMaior(actual_node.getEsquerda());
+    }
+
+    @Override
+    public int retornaMedia() {
+        int soma_total = this.retornaMedia(this.root, 0);
+        return (soma_total / this.size());
+    }
+
+    private int retornaMedia(BinaryNodeSearchTree<Index, E> actual_node, int counter) {
+        if (actual_node != null) {
+            counter += actual_node.getValor().hashCode();
+            counter = retornaMedia(actual_node.getEsquerda(), counter);
+            counter = retornaMedia(actual_node.getDireita(), counter);
+        }
+        return counter;
+    }
+
+    @Override
+    public int retornaNumeroDeFolhas() {
+        return this.retornaNumeroDeFolhas(this.root, 0);
+    }
+
+    private int retornaNumeroDeFolhas(BinaryNodeSearchTree<Index, E> actual_node, int counter) {
+        if (actual_node != null) {
+            if (actual_node.getEsquerda() == null && actual_node.getDireita() == null) {
+                counter++;
+            } else {
+                counter = retornaNumeroDeFolhas(actual_node.getEsquerda(), counter);
+                counter = retornaNumeroDeFolhas(actual_node.getDireita(), counter);
+            }
+        }
+        return counter;
+    }
+
+    @Override
+    public int retornaAltura() {
+        return this.retornaAltura(this.root,0,0);
+    }
+
+    private int retornaAltura(BinaryNodeSearchTree<Index, E> actual_node, int altura_atual,int maior_altura_atual) {
+        if (actual_node != null) {
+            altura_atual++;
+            if (altura_atual > maior_altura_atual) {
+                maior_altura_atual = altura_atual;
+            }
+            maior_altura_atual = retornaAltura(actual_node.getEsquerda(),altura_atual,maior_altura_atual);
+            maior_altura_atual = retornaAltura(actual_node.getDireita(),altura_atual, maior_altura_atual);
+        }
+        return maior_altura_atual;
+    }
 
 }

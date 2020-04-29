@@ -12,6 +12,8 @@ import java.util.List;
 /**
  *
  * @author 1181123221
+ * @param <Index>
+ * @param <E>
  */
 public interface BinarySearchTree_int<Index extends Comparable<Index>,E> {
         // Retorna a quantidade de n�s da �rvore
@@ -48,5 +50,14 @@ public interface BinarySearchTree_int<Index extends Comparable<Index>,E> {
         public List<BinaryNodeSearchTree<Index,E>> pre_ordem();
         public List<BinaryNodeSearchTree<Index,E>> pos_ordem();
         public List<BinaryNodeSearchTree<Index,E>> em_ordem();
-
+        //Retorna maior e menor valor
+        public BinaryNodeSearchTree<Index,E> retornaMaior();
+        public BinaryNodeSearchTree<Index,E> retornaMenor();
+        //Retorna media dos valores da arvore baseado no hash code de cada chave
+        public int retornaMedia();
+        //Retorna numero de folhas
+        public int retornaNumeroDeFolhas();
+        //Retorna altura da arvore
+        public int retornaAltura();
+        
 }
