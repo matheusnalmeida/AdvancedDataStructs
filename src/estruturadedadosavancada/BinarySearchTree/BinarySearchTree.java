@@ -508,7 +508,7 @@ public class BinarySearchTree<Index extends Comparable<Index>, E> implements Bin
         if (actual_node.getEsquerda() == null) {
             return actual_node;
         }
-        return this.retornaMaior(actual_node.getEsquerda());
+        return this.retornaMenor(actual_node.getEsquerda());
     }
 
     @Override
