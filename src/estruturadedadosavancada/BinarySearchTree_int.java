@@ -22,8 +22,6 @@ public interface BinarySearchTree_int<Index extends Comparable<Index>,E> {
 	public boolean isEmpty();
         // Retorna um interador sobre os elementos armazenados da �rvore
 	public Iterator<BinaryNodeSearchTree<Index,E>> iterator();
-        // Retorna um cole��o inter�vel de n�s
-	public Iterable<BinaryNodeSearchTree<Index,E>> nodes();
 	// Substitui o elemento armazenado em determinado n�
 	public E replace(BinaryNodeSearchTree<Index,E> node, E v) throws InvalidNodeException,EmptyTreeException;
 	// Retorna a raiz da �rvore

@@ -42,11 +42,6 @@ public class BinarySearchTree<Index extends Comparable<Index>, E> implements Bin
         return this.tamanho == 0;
     }
 
-    @Override
-    public Iterable<BinaryNodeSearchTree<Index, E>> nodes() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     //Substitui o valor armazenado em um no da arvore
     @Override
     public E replace(BinaryNodeSearchTree<Index, E> node, E v) throws InvalidNodeException, EmptyTreeException {
@@ -77,7 +72,6 @@ public class BinarySearchTree<Index extends Comparable<Index>, E> implements Bin
         if (actual_node == null) {
             throw new InvalidNodeException("No nao existente");
         }
-
         return actual_node.getFather();
     }
 
