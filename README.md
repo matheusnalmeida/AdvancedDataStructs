@@ -6,6 +6,7 @@ A repository that contains implementations of some "advanced" data structures an
 * Generic Tree
 * Binary Tree (Array implementation)
 * Binary Search Tree
+* AVL Tree
 
 ## Some of the Aplications using the data structs are:
 * Abstraction of a directory system using Generic Tree
