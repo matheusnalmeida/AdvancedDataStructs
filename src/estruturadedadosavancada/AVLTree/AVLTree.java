@@ -169,16 +169,16 @@ public class AVLTree<Index extends Comparable<Index>, E> implements AVLBinarySea
                 this.atualizaFatorDeBalanceamento(noAtual);
                 if (-1 > noAtual.getBalanco() || noAtual.getBalanco() > 1) {
                     if (noAtual.getBalanco() == -2) {
-                        if (noAtual.getDireita().getBalanco() == 1) {
+                        if (noAtual.getDireita() != null && noAtual.getDireita().getBalanco() == 1) {
                             this.rotacaoDuplaEsquerda(noAtual);
                         } else {
                             this.rotacaoSimplesEsquerda(noAtual);
                         }
                     } else if (noAtual.getBalanco() == 2) {
-                        if (noAtual.getDireita().getBalanco() == -1) {
+                        if (noAtual.getEsquerda() != null && noAtual.getEsquerda().getBalanco() == -1) {
                             this.rotacaoDuplaDireita(noAtual);
                         } else {
-                            this.rotacaoSimplesDiretita(noAtual);
+                            this.rotacaoSimplesDireita(noAtual);
                         }
                     }
                 }
@@ -266,16 +266,16 @@ public class AVLTree<Index extends Comparable<Index>, E> implements AVLBinarySea
             this.atualizaFatorDeBalanceamento(noAtual);
             if (-1 > noAtual.getBalanco() || noAtual.getBalanco() > 1) {
                 if (noAtual.getBalanco() == -2) {
-                    if (noAtual.getDireita().getBalanco() == 1) {
+                    if (noAtual.getDireita() != null && noAtual.getDireita().getBalanco() == 1) {
                         this.rotacaoDuplaEsquerda(noAtual);
                     } else {
                         this.rotacaoSimplesEsquerda(noAtual);
                     }
                 } else if (noAtual.getBalanco() == 2) {
-                    if (noAtual.getDireita().getBalanco() == -1) {
+                    if (noAtual.getEsquerda() != null && noAtual.getEsquerda().getBalanco() == -1) {
                         this.rotacaoDuplaDireita(noAtual);
                     } else {
-                        this.rotacaoSimplesDiretita(noAtual);
+                        this.rotacaoSimplesDireita(noAtual);
                     }
                 }
             }
@@ -343,7 +343,7 @@ public class AVLTree<Index extends Comparable<Index>, E> implements AVLBinarySea
     }
 
     //Algoritimos de rotacao na arvore
-    private void rotacaoSimplesDiretita(AVLNode node) {
+    private void rotacaoSimplesDireita(AVLNode node) {
         AVLNode new_parent = node.getEsquerda();
         if (new_parent.getDireita() != null) {
             node.setEsquerda(new_parent.getDireita());
@@ -407,11 +407,11 @@ public class AVLTree<Index extends Comparable<Index>, E> implements AVLBinarySea
 
     private void rotacaoDuplaDireita(AVLNode node) {
         this.rotacaoSimplesEsquerda(node.getEsquerda());
-        this.rotacaoSimplesDiretita(node);
+        this.rotacaoSimplesDireita(node);
     }
 
     private void rotacaoDuplaEsquerda(AVLNode node) {
-        this.rotacaoSimplesDiretita(node.getDireita());
+        this.rotacaoSimplesDireita(node.getDireita());
         this.rotacaoSimplesEsquerda(node);
     }
 
@@ -689,5 +689,33 @@ public class AVLTree<Index extends Comparable<Index>, E> implements AVLBinarySea
         }
 
         return nome_da_cidade_formatado.toString();
+    }
+
+    private void print2DUtil(AVLNode root, int space,int COUNT) {
+        // Base case  
+        if (root == null) {
+            return;
+        }
+
+        // Increase distance between levels  
+        space += COUNT;
+
+        // Process right child first  
+        print2DUtil(root.getDireita(), space,10);
+
+        // Print current node after space  
+        // count  
+        System.out.print("\n");
+        for (int i = COUNT; i < space; i++) {
+            System.out.print(" ");
+        }
+        System.out.print(root.getChave() + "\n");
+
+        // Process left child  
+        print2DUtil(root.getEsquerda(), space,10);
+    }
+
+    public void print2D() {
+        print2DUtil(this.root, 0,10);
     }
 }

@@ -255,7 +255,7 @@ public class main {
     public static void menu() {
         System.out.println("0 - Finalizar Programa");
         System.out.println("1 - Quantidade De Nos");
-        System.out.println("2 - Sunstituir valor de um no da arvore(OBS: Valor e nao chave)");
+        System.out.println("2 - Substituir valor de um no da arvore(OBS: Valor e nao chave)");
         System.out.println("3 - Retornar parente de um dado no");
         System.out.println("4 - Retornar os filhos de um dado no");
         System.out.println("5 - Verificar se um dado no e interno");

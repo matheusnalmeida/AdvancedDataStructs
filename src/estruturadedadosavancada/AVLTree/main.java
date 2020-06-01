@@ -20,23 +20,20 @@ public class main {
     public static void main(String[] args) throws InvalidNodeException {
         AVLTree<Integer,Integer> tree = new AVLTree(); 
   
-        /* Constructing tree given in the above figure */
-        tree.insert(new AVLNode(10, 10)); 
-        tree.insert(new AVLNode(20, 20)); 
-        tree.insert(new AVLNode(30, 30)); 
-        tree.insert(new AVLNode(40, 40)); 
-        tree.remove(10);
-        tree.limparArvore();
-        tree.insert(new AVLNode(10, 10)); 
-        tree.insert(new AVLNode(20, 20)); 
-        tree.insert(new AVLNode(30, 30)); 
-        tree.insert(new AVLNode(40, 40)); 
-        tree.remove(10);
+        tree.insert(new AVLNode(7, 7)); 
+        tree.insert(new AVLNode(6, 6)); 
+        tree.insert(new AVLNode(8, 8)); 
+        tree.insert(new AVLNode(2, 2)); 
+        tree.print2D();
+        System.out.println("-----------------------------------------------------------");
+        tree.insert(new AVLNode(3, 3)); 
         //tree.insert(new AVLNode(50, 50)); 
         //tree.insert(new AVLNode(60, 60)); 
         //tree.insert(new AVLNode<>(70,70));
         //printArr(tree.pre_ordem());
-        System.out.println(tree.printarArvore());
+        tree.remove(6);
+        tree.remove(8);
+        tree.print2D();
     }
     
     public static void printArr(List<AVLNode<Integer,Integer>> arr){
